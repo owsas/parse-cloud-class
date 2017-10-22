@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "tslint-config-airbnb"
+  ],
+  "rules": {
+    "no-switch-case-fall-through": false,
+    "no-console": [
+      true
+    ],
+    "prefer-for-of": true,
+    "prefer-const": true,
+    "no-unused-variable": [
+      true
+    ]
+  }
+}

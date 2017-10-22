@@ -1,0 +1,17 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "outDir": "out",
+    "declaration": true,
+    "declarationDir": "out"
+  },
+  "exclude": [
+    "node_modules",
+    "*.test.ts",
+    "out"
+  ]
+}
