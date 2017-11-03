@@ -11,6 +11,7 @@
     "prefer-const": true,
     "no-unused-variable": [
       true
-    ]
+    ],
+    "no-undef": [true]
   }
 }
