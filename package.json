@@ -1,5 +1,5 @@
 {
-  "name": "parse-cloud-class",
+  "name": "parse-server-addon-cloud-class",
   "version": "1.0.0",
   "description": "A new way to define Parse.Cloud events for your classes",
   "main": "out/index.js",

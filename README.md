@@ -12,7 +12,7 @@ A new way to define Parse.Cloud events for your classes (DB tables). With this m
 This module is meant to be used with [Parse](http://docs.parseplatform.org/) and [Parse Server](https://github.com/parse-community/parse-server)
 
 ## Installation
-`> npm install parse-cloud-class`
+`> npm install parse-server-addon-cloud-class`
 
 __Typescript__: This module comes bundled with Intellisense :)
 
@@ -24,10 +24,10 @@ __Typescript__: This module comes bundled with Intellisense :)
 */
 
 // with normal ES5
-const ParseCloudClass = require('parse-cloud-class').ParseCloudClass;
+const ParseCloudClass = require('parse-server-addon-cloud-class').ParseCloudClass;
 
 // with typescript or ES6
-import { ParseCloudClass } from 'parse-cloud-class';
+import { ParseCloudClass } from 'parse-server-addon-cloud-class';
 
 const myConfig = new ParseCloudClass({
   // new items will not be created if they have no 'name' set
@@ -65,7 +65,7 @@ You can easily extend ParseCloudClass in order to define your custom behaviours.
 
 ```js
 // myCustomFile.js
-import { ParseCloudClass } from 'parse-cloud-class';
+import { ParseCloudClass } from 'parse-server-addon-cloud-class';
 
 export class MyCustomClass extends ParseCloudClass {
   /*
@@ -101,7 +101,7 @@ to use that addon. Example:
 
 ```js
 // with typescript or ES6
-import { ParseCloudClass } from 'parse-cloud-class';
+import { ParseCloudClass } from 'parse-server-addon-cloud-class';
 import { SomeAddon } from 'some-addon-module';
 
 const myConfig = new ParseCloudClass();
