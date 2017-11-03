@@ -22,6 +22,10 @@
   },
   "dependencies": {},
   "jest": {
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/test"
+    ],
     "mapCoverage": true,
     "collectCoverage": true,
     "transform": {

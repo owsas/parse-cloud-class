@@ -1,1 +1,0 @@
-import { MyModule } from './index';
