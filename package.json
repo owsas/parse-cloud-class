@@ -1,7 +1,7 @@
 {
-  "name": "typescript-module-template",
+  "name": "parse-cloud-class",
   "version": "1.0.0",
-  "description": "A typescript boilerplate to publish modules to npm",
+  "description": "A new way to define Parse.Cloud events for your classes",
   "main": "out/index.js",
   "scripts": {
     "test": "jest --ci --silent",
@@ -49,10 +49,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/owsas/typescript-module-template.git"
+    "url": "git+https://github.com/owsas/parse-cloud-class.git"
   },
   "bugs": {
-    "url": "https://github.com/owsas/typescript-module-template/issues"
+    "url": "https://github.com/owsas/parse-cloud-class/issues"
   },
-  "homepage": "https://github.com/owsas/typescript-module-template#readme"
+  "homepage": "https://github.com/owsas/parse-cloud-class#readme"
 }
