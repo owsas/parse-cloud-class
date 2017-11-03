@@ -1,0 +1,7 @@
+src/
+node_modules/
+test/
+tsconfig.json
+tslint.json
+coverage/
+.vscode/
