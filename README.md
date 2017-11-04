@@ -96,6 +96,55 @@ export class MyCustomClass extends ParseCloudClass {
 
 You can change the implementation of any method to your needs, but please, trigger the addon functions if you expect to have addon functionalities.
 
+### All the possibilities
+
+```ts
+interface IParseCloudClass {
+
+  beforeFind(
+    req: Parse.Cloud.BeforeFindRequest,
+  ): Parse.Query;
+
+  processBeforeSave (
+    req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
+  ): Promise<Parse.Object>;
+
+  beforeSave(
+    req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
+    res: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
+  ): Promise<boolean>;
+
+  afterSave (
+    req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
+  ): Promise<Parse.Object>;
+
+  processBeforeDelete (
+    req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
+  ): Promise<Parse.Object>;
+
+  beforeDelete(
+    req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
+    res: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
+  ): Promise<boolean>;
+
+  afterDelete (
+    req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
+  ): Promise<Parse.Object>;
+
+}
+```
+
+Note: IProcessRequest is an interface that allows you to do testing
+
+```ts
+interface IProcessRequest {
+  object: Parse.Object;
+  user?: Parse.User;
+  master?: boolean;
+}
+```
+
+
 ## Using addons
 
 To use an addon, you would first import it, and then configure your class
