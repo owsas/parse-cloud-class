@@ -190,3 +190,6 @@ Otherwise SAS, Colombia
 ## License 
 
 MIT.
+
+## Support us on Patreon
+[![patreon](./repo/patreon.png)](https://patreon.com/owsas)
