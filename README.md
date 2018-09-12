@@ -2,6 +2,8 @@
 
 ![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master)
 
+Travis tests: https://travis-ci.org/owsas/parse-cloud-class/builds 
+
 A new way to define Parse.Cloud events for your classes (DB tables). With this module you can easily:
 
 * Define minimum values for keys on your classes
