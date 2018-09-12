@@ -80,21 +80,20 @@ export class MyCustomClass extends ParseCloudClass {
   * @param req {Parse.Cloud.BeforeSaveRequest}
   */
   async processBeforeSave(req) {
-    // Trigger the addons to determine if the object can be saved
-    for (const addon of this.addons) {
-      req.object = await addon.processBeforeSave(req);          
-    }
+    // Make sure the super class validates the required keys,
+    // minimum values, executes the addons, etc
+    const object = await super.processBeforeSave(req);
 
     // write your own code here
     ....
 
     // make sure to return req.object
-    return req.object;
+    return object;
   }
 }
 ```
 
-You can change the implementation of any method to your needs, but please, trigger the addon functions if you expect to have addon functionalities.
+You can change the implementation of any method to your needs, but please, call the super class' processBeforeSave if you expect to have requiredKeys checking, minimum values checking, addon functionalities, etcetera.
 
 ### All the possibilities
 
