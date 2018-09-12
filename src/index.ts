@@ -232,7 +232,7 @@ export class ParseCloudClass implements IParseCloudClass {
 
     // Trigger the addons to determine if the object can be saved
     for (const addon of this.addons) {
-      req.object = await addon.processBeforeSave(req);          
+      obj = await addon.processBeforeSave(req);          
     }
 
     return obj;

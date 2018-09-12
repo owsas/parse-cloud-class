@@ -410,3 +410,68 @@ describe('#afterDelete', () => {
     expect(spyAddon).toHaveBeenCalledTimes(1);
   });
 });
+
+describe.only('Working with addons', () => {
+  const testFn = jest.fn();
+
+  class ExtendedClass2 extends ParseCloudClass {
+    async processBeforeSave(req: Parse.Cloud.BeforeSaveRequest) {
+      const object = await super.processBeforeSave(req);
+      testFn(3);
+      object.set('test', true);
+      return object;
+    }
+  }
+
+  class Addon1 extends ParseCloudClass {
+    async processBeforeSave(req: Parse.Cloud.BeforeSaveRequest) {
+      req.object.set('addon1', true);
+      testFn(1);
+      return req.object;
+    }
+  }
+
+  class Addon2 extends ParseCloudClass {
+    async processBeforeSave(req: Parse.Cloud.BeforeSaveRequest) {
+      req.object.set('addon2', true);
+      testFn(2);
+      return req.object;
+    }
+  }
+
+  const instance = new ExtendedClass2();
+  const addon1 = new Addon1();
+  const addon2 = new Addon2();
+
+  // Create the addons
+  instance.useAddon(addon1);
+  instance.useAddon(addon2);
+
+  // Create the object
+  let obj = new Parse.Object('TestObject');
+
+  test('executing an instance function', async () => {
+    obj = await instance.processBeforeSave({ object: obj });
+  });
+
+  test('instance should have both addons', () => {
+    expect(instance.addons).toEqual([addon1, addon2]);
+  });
+
+  test('should have called the testFn 3 times', () => {
+    expect(testFn).toHaveBeenCalledTimes(3);
+    expect(testFn).toHaveBeenCalledWith(1);
+    expect(testFn).toHaveBeenCalledWith(2);
+    expect(testFn).toHaveBeenCalledWith(3);
+  });
+
+  test('should have executed all addon functions', () => {  
+    // Expect the object to have been mutated
+    expect(obj.get('test')).toBe(true);
+
+    // Expect all addons to have been called
+    expect(obj.get('addon1')).toBe(true);
+    expect(obj.get('addon2')).toBe(true);
+  });
+
+});
