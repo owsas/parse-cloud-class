@@ -179,6 +179,28 @@ Addons can be created by extending ParseCloudClass and defining new behaviours o
 * `processBeforeSave`
 * `processBeforeDelete`
 
+### Example addon:
+
+```js
+// In Javascript
+class Addon1 extends ParseCloudClass {
+  async processBeforeSave(req) {
+    req.object.set('addon1', true);
+    return req.object;
+  }
+}
+```
+
+```ts
+// In Typescript
+class Addon1 extends ParseCloudClass {
+  async processBeforeSave(req: Parse.Cloud.BeforeSaveRequest) {
+    req.object.set('addon1', true);
+    return req.object;
+  }
+}
+```
+
 
 ## Credits
 
