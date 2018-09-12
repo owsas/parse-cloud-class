@@ -7,4 +7,4 @@ install:
   - yarn install
 script:
   - npm run build
-  - npm t
+  - npm t -- --coverage
