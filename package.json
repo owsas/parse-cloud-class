@@ -14,13 +14,13 @@
   "author": "Juan Camilo Guarín P",
   "license": "MIT",
   "devDependencies": {
-    "@types/jquery": "^3.3.6",
     "@types/jest": "^23.3.2",
+    "@types/jquery": "^3.3.6",
     "@types/parse": "^2.4.0",
     "jest": "^23.6.0",
     "parse": "^1.10.1",
     "ts-jest": "^23.1.4",
-    "tslint": "^5.8.0",
+    "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.3.0",
     "typescript": "^3.0.3"
   },
