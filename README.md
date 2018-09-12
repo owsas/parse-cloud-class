@@ -203,6 +203,10 @@ class Addon1 extends ParseCloudClass {
 }
 ```
 
+## Addons
+
+* Algolia Search: https://github.com/owsas/parse-server-addon-cloud-algolia 
+
 
 ## Credits
 
