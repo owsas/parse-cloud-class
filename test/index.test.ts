@@ -3,8 +3,8 @@ import * as Parse from 'parse/node';
 import { ParseCloudClass } from '../src/index';
 
 class ExtendedParseClass extends ParseCloudClass {
-  static requiredKeys = ['name', 'creditCard', 'description'];
-  static defaultValues = {
+  requiredKeys = ['name', 'creditCard', 'description'];
+  defaultValues = {
     views: 0,
     otherValue: ['a', 'b', 'c'],
   };
@@ -310,13 +310,42 @@ describe('#processBeforeSave', () => {
 
     for (const key in classInstance.defaultValues) {
       const actual = response.get(key);
-      expect(response.get(key)).toEqual(classInstance.defaultValues[key]);
+      expect(actual).toEqual(classInstance.defaultValues[key]);
     }
+  });
+
+  test('should throw an error if an immutable key is changed', async () => {
+    const obj = new Parse.Object('Test');
+    obj.set('test', 1);
+    obj.set('test2', 2);
+
+    const instance = new ParseCloudClass({ immutableKeys: ['test', 'test2'] });
+    let error;
+
+    try {
+      await instance.processBeforeSave({ object: obj });
+    } catch (e) {
+      error = e;
+    } finally {
+      expect(error).toBeDefined();
+      expect(() => {
+        throw error;
+      }).toThrow('test cannot be modified');
+    }
+  });
+
+  test('should not throw an error if an immutable key is changed with the master key', async () => {
+    const obj = new Parse.Object('Test');
+    obj.set('test', 1);
+    obj.set('test2', 2);
+
+    const instance = new ParseCloudClass({ immutableKeys: ['test', 'test2'] });
+    await instance.processBeforeSave({ object: obj, master: true });
   });
 
   test('should have called the addon\'s processBeforeSave', async () => {
     const spyAddon = jest.spyOn(addon, 'processBeforeSave');
-    const response = await classInstance.processBeforeSave({
+    await classInstance.processBeforeSave({
       object: OBJ_OK,
     });
     expect(spyAddon).toHaveBeenCalledTimes(1);
@@ -350,7 +379,7 @@ describe('#afterSave', () => {
 
   test('should have called the addon\'s afterSave', async () => {
     const spyAddon = jest.spyOn(addon, 'afterSave');
-    const response = await classInstance.afterSave({
+    await classInstance.afterSave({
       object: OBJ_OK,
     });
     expect(spyAddon).toHaveBeenCalledTimes(1);
@@ -374,7 +403,7 @@ describe('#processBeforeDelete', () => {
 
   test('should have called the addon\'s processBeforeDelete', async () => {
     const spyAddon = jest.spyOn(addon, 'processBeforeDelete');
-    const response = await classInstance.processBeforeDelete({
+    await classInstance.processBeforeDelete({
       object: OBJ_OK,
     });
     expect(spyAddon).toHaveBeenCalledTimes(1);
@@ -411,7 +440,7 @@ describe('#afterDelete', () => {
   });
 });
 
-describe.only('Working with addons', () => {
+describe('Working with addons', () => {
   const testFn = jest.fn();
 
   class ExtendedClass2 extends ParseCloudClass {

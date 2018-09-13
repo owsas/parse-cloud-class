@@ -76,11 +76,13 @@ export class ParseCloudClass implements IParseCloudClass {
   defaultValues: {[key: string]: any} = {};
   minimumValues: {[key: string]: number} = {};
   addons: ParseCloudClass [] = [];
+  immutableKeys: string[] = [];
 
   constructor (params?: {
     requiredKeys?: string[],
     defaultValues?: {[key: string]: any},
     minimumValues?: {[key: string]: number},
+    immutableKeys?: string[],
   }) {
     if (params) {
       if (params.requiredKeys) {
@@ -93,6 +95,10 @@ export class ParseCloudClass implements IParseCloudClass {
 
       if (params.minimumValues) {
         this.minimumValues = params.minimumValues;
+      }
+
+      if (params.immutableKeys) {
+        this.immutableKeys = params.immutableKeys;
       }
     }
   }
@@ -172,6 +178,20 @@ export class ParseCloudClass implements IParseCloudClass {
   }
 
   /**
+   * Checks keys that should not be editable
+   * if they are not explicitly changed with the master key
+   * @param obj 
+   * @param isMaster 
+   */
+  checkImmutableKeys(obj: Parse.Object, isMaster: boolean) {
+    this.immutableKeys.forEach((key) => {
+      if (obj.dirtyKeys().indexOf(key) !== -1 && !isMaster) {
+        throw new Parse.Error(-1, `${key} cannot be modified`);
+      }
+    });
+  }
+
+  /**
    * Pushes an addon to the addon list
    * @param addon
    */
@@ -229,6 +249,7 @@ export class ParseCloudClass implements IParseCloudClass {
     obj = ParseCloudClass.setDefaultValues(obj, this.defaultValues);
     obj = ParseCloudClass.checkAndCorrectMinimumValues(obj, this.minimumValues || {});
     ParseCloudClass.checkRequiredKeys(obj, this.requiredKeys);
+    this.checkImmutableKeys(obj, req.master);
 
     // Trigger the addons to determine if the object can be saved
     for (const addon of this.addons) {
