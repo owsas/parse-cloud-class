@@ -9,6 +9,7 @@ A new way to define Parse.Cloud events for your classes (DB tables). With this m
 * Define minimum values for keys on your classes
 * Define default values
 * Define required keys
+* Define immutable keys (only editable with the master key)
 * Use addons to easily extend the funcionality of your app
 * Create new addons and share them with the community
 * Customize the default behaviour to your own needs
@@ -34,18 +35,24 @@ const ParseCloudClass = require('parse-server-addon-cloud-class').ParseCloudClas
 import { ParseCloudClass } from 'parse-server-addon-cloud-class';
 
 const myConfig = new ParseCloudClass({
-  // new items will not be created if they have no 'name' set
-  requiredKeys: ['name']
+  // New items will not be created if they have no 'name' set
+  requiredKeys: ['name'],
+  
   defaultValues: {
-    // all new items will have active: true
+    // All new items will have active: true
     active: true,
-    // by default, timesShared will be 0
+    // By default, timesShared will be 0
     timesShared: 0,
   },
+
   minimumValues: {
     // timesShared cannot go below 0
     timesShared: 0,
-  }
+  },
+
+  // Keys that are only editable by the master key.
+  // Trying to edit apiKey without the master key will throw an error
+  immutableKeys: ['apiKey'],
 });
 
 // Configure your class to use the configuration
