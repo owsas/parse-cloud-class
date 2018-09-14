@@ -27,7 +27,7 @@ const app = express();
 app.use('/parse', api);
 
 const obj = new Parse.Object('Test');
-obj.set('name', 'Test name');
+obj.set('number', 123);
 
 beforeAll(async () => {
   return new Promise((resolve, reject) => {
