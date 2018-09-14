@@ -22,7 +22,7 @@ This module is meant to be used with [Parse](http://docs.parseplatform.org/) and
 __Typescript__: This module comes bundled with Intellisense :)
 
 ## Supported versions
-* Parse 1.11.1
+* Parse >1.10.0
 * Parse >=2.0
 
 ## Basic Usage
@@ -123,7 +123,8 @@ interface IParseCloudClass {
 
   beforeSave(
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
+    // parse sdk > 2.0 does not have the res parameter
+    res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
   ): Promise<boolean>;
 
   afterSave (
@@ -136,7 +137,8 @@ interface IParseCloudClass {
 
   beforeDelete(
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
+    // parse sdk > 2.0 does not have the res parameter
+    res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
   ): Promise<boolean>;
 
   afterDelete (
