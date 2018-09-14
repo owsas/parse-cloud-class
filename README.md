@@ -21,6 +21,10 @@ This module is meant to be used with [Parse](http://docs.parseplatform.org/) and
 
 __Typescript__: This module comes bundled with Intellisense :)
 
+## Supported versions
+* Parse 1.11.1
+* Parse >=2.0
+
 ## Basic Usage
 ```js
 /*
