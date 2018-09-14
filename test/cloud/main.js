@@ -1,4 +1,5 @@
 const { ParseCloudClass } = require('../../src');
+const TestAddon = require('./TestAddon');
 
 class Test extends ParseCloudClass {
   async processBeforeSave(req) {
@@ -9,4 +10,7 @@ class Test extends ParseCloudClass {
   }
 }
 
-ParseCloudClass.configureClass(Parse, 'Test', new Test()); 
+const instance = new Test();
+instance.useAddon(new TestAddon());
+
+ParseCloudClass.configureClass(Parse, 'Test', instance); 
