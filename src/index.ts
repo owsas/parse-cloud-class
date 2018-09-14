@@ -204,9 +204,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * elements of this class
    * @param req 
    */
-  beforeFind(
+  beforeFind = (
     req: Parse.Cloud.BeforeFindRequest | IBeforeFindRequest,
-  ): Parse.Query {
+  ): Parse.Query => {
     return req.query;
   }
 
@@ -217,10 +217,10 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param res
    * @return A promise that says if everything went fine or not 
    */
-  async beforeSave (
+  beforeSave = async (
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
     res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
-  ): Promise<Parse.Object> {
+  ): Promise<Parse.Object> => {
     try {
       req.object = await this.processBeforeSave(req);
       if (res) {
@@ -266,9 +266,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param req
    * @return The object that was saved
    */
-  async afterSave (
+  afterSave = async (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-  ): Promise<Parse.Object> {
+  ): Promise<Parse.Object> => {
 
     // Trigger the addons for the beforeSave process
     for (const addon of this.addons) {
@@ -303,10 +303,10 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param res 
    * @return A promise that states if everything went fine or not
    */
-  async beforeDelete (
+  beforeDelete = async (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
     res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
-  ): Promise<Parse.Object> {
+  ): Promise<Parse.Object> => {
     try {
       req.object = await this.processBeforeDelete(req);
       if (res) {
@@ -329,9 +329,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * successfully
    * @param req
    */
-  async afterDelete (
+  afterDelete = async (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-  ): Promise<Parse.Object> {
+  ): Promise<Parse.Object> => {
     // Trigger the addons to determine what happens after 
     // the object has been deleted
     for (const addon of this.addons) {
