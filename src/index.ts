@@ -44,8 +44,8 @@ export interface IParseCloudClass {
 
   beforeSave(
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
-  ): Promise<boolean>;
+    res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
+  ): Promise<Parse.Object>;
 
   afterSave (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
@@ -57,8 +57,8 @@ export interface IParseCloudClass {
 
   beforeDelete(
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
-  ): Promise<boolean>;
+    res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
+  ): Promise<Parse.Object>;
 
   afterDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
@@ -219,21 +219,23 @@ export class ParseCloudClass implements IParseCloudClass {
    */
   async beforeSave (
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
-  ): Promise<boolean> {
-    let ok = false;
-
+    res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
+  ): Promise<Parse.Object> {
     try {
       req.object = await this.processBeforeSave(req);
-      ok = true;
-      (res as any).success(req.object);
+      if (res) {
+        (res as any).success(req.object);
+      } else {
+        return req.object;
+      }
     } catch (e) {
       const message = e.message || JSON.stringify(e);
-      res.error(message);
+      if (res) {
+        res.error(message);
+      } else {
+        throw e;
+      }
     }
-
-    // return the error status
-    return ok;
   }
 
   /**
@@ -303,21 +305,23 @@ export class ParseCloudClass implements IParseCloudClass {
    */
   async beforeDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-    res: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
-  ): Promise<boolean> {
-    let ok = true;
-
+    res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
+  ): Promise<Parse.Object> {
     try {
       req.object = await this.processBeforeDelete(req);
-      (res as any).success(req.object);
+      if (res) {
+        (res as any).success(req.object);
+      } else {
+        return req.object;
+      }
     } catch (e) {
       const message = e.message || JSON.stringify(e);
-      ok = false;
-      res.error(message);
+      if (res) {
+        res.error(message);
+      } else {
+        throw e;
+      }
     }
-
-    // return the error status
-    return ok;
   }
 
   /**

@@ -167,6 +167,26 @@ describe('#beforeSave', () => {
     });
   });
 
+  // tslint:disable-next-line
+  test('should save with no problems and return the object if there is no response parameter', async () => {
+    const CLASSNAME = 'Test';
+    const obj = new ParseCloudClass({
+      requiredKeys: ['name'],
+      defaultValues: {
+        name: 'hello',
+      },
+    });
+
+    expect(obj.beforeSave).toBeTruthy();
+
+    const returnedObject = await obj.beforeSave({
+      object: new Parse.Object(CLASSNAME),
+      user: new Parse.User(),
+    });
+
+    expect(returnedObject.className).toEqual(CLASSNAME);
+  });
+
   test('should not save if required keys are not met', async () => {
     const CLASSNAME = 'Test';
     const obj = new ParseCloudClass({
@@ -186,6 +206,28 @@ describe('#beforeSave', () => {
         expect(e).toBeDefined();
       },
     });
+  });
+
+  // tslint:disable-next-line
+  test('should not save if required keys are not met, and should throw if there is no response parameter', async () => {
+    const CLASSNAME = 'Test';
+    const obj = new ParseCloudClass({
+      requiredKeys: ['name'],
+      defaultValues: {
+      },
+    });
+    let error;
+
+    try {
+      await obj.beforeSave({
+        object: new Parse.Object(CLASSNAME),
+        user: new Parse.User(),
+      });
+    } catch (e) {
+      error = e;
+    } finally {
+      expect(error).toBeDefined();
+    }
   });
 
 });
@@ -215,6 +257,26 @@ describe('#beforeDelete', () => {
     });
   });
 
+  // tslint:disable-next-line
+  test('should delete with no problems and return the object if there is no response parameter', async () => {
+    const CLASSNAME = 'Test';
+    const obj = new ParseCloudClass({
+      requiredKeys: ['name'],
+      defaultValues: {
+        name: 'hello',
+      },
+    });
+
+    expect(obj.beforeDelete).toBeTruthy();
+
+    const returnedObject = await obj.beforeDelete({
+      object: new Parse.Object(CLASSNAME),
+      user: new Parse.User(),
+    });
+
+    expect(returnedObject.className).toEqual(CLASSNAME);
+  });
+
   test('should not delete if something goes wrong', async () => {
     const CLASSNAME = 'Test';
     const obj = new ParseCloudClass({
@@ -237,6 +299,31 @@ describe('#beforeDelete', () => {
         expect(e).toBeDefined();
       },
     });
+  });
+  
+  // tslint:disable-next-line
+  test('should not delete if something goes wrong, and throw if there is no response parameter', async () => {
+    const CLASSNAME = 'Test';
+    const obj = new ParseCloudClass({
+      requiredKeys: ['name'],
+      defaultValues: {
+      },
+    });
+    let error;
+
+    const spyDelete = jest.spyOn(obj, 'processBeforeDelete');
+    spyDelete.mockImplementation(async () => { throw new Error();});
+
+    try {
+      await obj.beforeDelete({
+        object: new Parse.Object(CLASSNAME),
+        user: new Parse.User(),
+      });
+    } catch (e) {
+      error = e;
+    } finally {
+      expect(error).toBeDefined();
+    }
   });
   
 });
