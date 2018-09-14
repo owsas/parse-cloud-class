@@ -5,7 +5,7 @@
   "main": "out/index.js",
   "types": "out/index.d.ts",
   "scripts": {
-    "test": "jest --ci --silent",
+    "test": "jest --ci --maxWorkers=2",
     "build": "tsc",
     "watch": "tsc -w",
     "prepublishOnly": "tsc"
