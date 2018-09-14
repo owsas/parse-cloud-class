@@ -222,13 +222,9 @@ export class ParseCloudClass implements IParseCloudClass {
     res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
   ): Promise<Parse.Object> => {
     try {
-      (req as any).log.info('addons', this.addons);
-
       // Trigger the addons to determine if the object can be saved
       for (const addon of this.addons) {
-        (req as any).log.info('addon', addon);
         req.object = await addon.processBeforeSave(req);          
-        (req as any).log.info('addon', addon);
       }
 
       req.object = await this.processBeforeSave(req);
