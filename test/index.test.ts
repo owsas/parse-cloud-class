@@ -567,7 +567,7 @@ describe('Working with addons', () => {
   let obj = new Parse.Object('TestObject');
 
   test('executing an instance function', async () => {
-    obj = await instance.processBeforeSave({ object: obj });
+    obj = await instance.processBeforeSave({ object: obj } as any);
   });
 
   test('instance should have both addons', () => {
