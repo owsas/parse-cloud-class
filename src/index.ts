@@ -195,7 +195,7 @@ export class ParseCloudClass implements IParseCloudClass {
    * Pushes an addon to the addon list
    * @param addon
    */
-  useAddon(addon: ParseCloudClass) {
+  useAddon = (addon: ParseCloudClass) => {
     this.addons.push(addon);
   }
 
@@ -222,6 +222,11 @@ export class ParseCloudClass implements IParseCloudClass {
     res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
   ): Promise<Parse.Object> => {
     try {
+      // Trigger the addons to determine if the object can be saved
+      for (const addon of this.addons) {
+        req.object = await addon.processBeforeSave(req);          
+      }
+
       req.object = await this.processBeforeSave(req);
       if (res) {
         (res as any).success(req.object);
@@ -253,11 +258,6 @@ export class ParseCloudClass implements IParseCloudClass {
     ParseCloudClass.checkRequiredKeys(obj, this.requiredKeys);
     this.checkImmutableKeys(obj, req.master);
 
-    // Trigger the addons to determine if the object can be saved
-    for (const addon of this.addons) {
-      obj = await addon.processBeforeSave(req);          
-    }
-
     return obj;
   }
 
@@ -287,12 +287,6 @@ export class ParseCloudClass implements IParseCloudClass {
   async processBeforeDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
   ): Promise<Parse.Object> {
-
-    // Trigger the addons to determine if the object can be delete
-    for (const addon of this.addons) {
-      req.object = await addon.processBeforeDelete(req);          
-    }
-
     return req.object;
   }
 
@@ -308,6 +302,11 @@ export class ParseCloudClass implements IParseCloudClass {
     res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
   ): Promise<Parse.Object> => {
     try {
+      // Trigger the addons to determine if the object can be delete
+      for (const addon of this.addons) {
+        req.object = await addon.processBeforeDelete(req);          
+      }
+
       req.object = await this.processBeforeDelete(req);
       if (res) {
         (res as any).success(req.object);
