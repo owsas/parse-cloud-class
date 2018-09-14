@@ -8,8 +8,7 @@
     "outDir": "out",
     "declaration": true,
     "declarationDir": "out",
-    "rootDir": "src",
-    "allowJs": true
+    "rootDir": "src"
   },
   "exclude": [
     "node_modules",
