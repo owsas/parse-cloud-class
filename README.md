@@ -1,6 +1,7 @@
-# Parse Cloud Class
+# Parse Cloud Class ![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master)
 
-![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master)
+![Logo](./repo/logo.jpg)  
+Photo by [chuttersnap](https://unsplash.com/photos/9AqIdzEc9pY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com)
 
 Travis tests: https://travis-ci.org/owsas/parse-cloud-class/builds 
 
