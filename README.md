@@ -21,6 +21,9 @@ This module is meant to be used with [Parse](http://docs.parseplatform.org/) and
 
 __Typescript__: This module comes bundled with Intellisense :)
 
+## Example
+A working example can be found here: https://github.com/owsas/parse-cloud-class-example
+
 ## Supported versions
 * Parse >1.10.0
 * Parse >=2.0
