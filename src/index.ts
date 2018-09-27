@@ -101,6 +101,13 @@ export class ParseCloudClass implements IParseCloudClass {
         this.immutableKeys = params.immutableKeys;
       }
     }
+
+    this.afterSave = this.afterSave.bind(this);
+    this.afterDelete = this.afterDelete.bind(this);
+    this.beforeDelete = this.beforeDelete.bind(this);
+    this.beforeFind = this.beforeFind.bind(this);
+    this.beforeSave = this.beforeSave.bind(this);
+    this.useAddon = this.useAddon.bind(this);
   }
 
   /**
@@ -195,7 +202,7 @@ export class ParseCloudClass implements IParseCloudClass {
    * Pushes an addon to the addon list
    * @param addon
    */
-  useAddon = (addon: ParseCloudClass) => {
+  useAddon(addon: ParseCloudClass) {
     this.addons.push(addon);
   }
 
@@ -204,9 +211,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * elements of this class
    * @param req 
    */
-  beforeFind = (
+  beforeFind (
     req: Parse.Cloud.BeforeFindRequest | IBeforeFindRequest,
-  ): Parse.Query => {
+  ): Parse.Query {
     return req.query;
   }
 
@@ -217,10 +224,10 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param res
    * @return A promise that says if everything went fine or not 
    */
-  beforeSave = async (
+  async beforeSave (
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
     res?: Parse.Cloud.BeforeSaveResponse | IProcessResponse,
-  ): Promise<Parse.Object> => {
+  ): Promise<Parse.Object> {
     try {
       // Trigger the addons to determine if the object can be saved
       for (const addon of this.addons) {
@@ -251,7 +258,7 @@ export class ParseCloudClass implements IParseCloudClass {
    */
   async processBeforeSave (
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
-  ): Promise<Parse.Object> {
+  ): Promise< Parse.Object> {
     let obj = req.object;
     obj = ParseCloudClass.setDefaultValues(obj, this.defaultValues);
     obj = ParseCloudClass.checkAndCorrectMinimumValues(obj, this.minimumValues || {});
@@ -266,9 +273,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param req
    * @return The object that was saved
    */
-  afterSave = async (
+  async afterSave (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-  ): Promise<Parse.Object> => {
+  ): Promise< Parse.Object > {
 
     // Trigger the addons for the beforeSave process
     for (const addon of this.addons) {
@@ -286,7 +293,7 @@ export class ParseCloudClass implements IParseCloudClass {
    */
   async processBeforeDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-  ): Promise<Parse.Object> {
+  ): Promise< Parse.Object > {
     return req.object;
   }
 
@@ -297,10 +304,10 @@ export class ParseCloudClass implements IParseCloudClass {
    * @param res 
    * @return A promise that states if everything went fine or not
    */
-  beforeDelete = async (
+  async beforeDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
     res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
-  ): Promise<Parse.Object> => {
+  ): Promise<Parse.Object> {
     try {
       // Trigger the addons to determine if the object can be delete
       for (const addon of this.addons) {
@@ -328,9 +335,9 @@ export class ParseCloudClass implements IParseCloudClass {
    * successfully
    * @param req
    */
-  afterDelete = async (
+  async afterDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
-  ): Promise<Parse.Object> => {
+  ): Promise<Parse.Object> {
     // Trigger the addons to determine what happens after 
     // the object has been deleted
     for (const addon of this.addons) {
