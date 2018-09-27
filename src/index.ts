@@ -75,6 +75,7 @@ export class ParseCloudClass implements IParseCloudClass {
   requiredKeys: string[] = [];
   defaultValues: {[key: string]: any} = {};
   minimumValues: {[key: string]: number} = {};
+  maximumValues: {[key: string]: number} = {};
   addons: ParseCloudClass [] = [];
   immutableKeys: string[] = [];
 
@@ -82,6 +83,7 @@ export class ParseCloudClass implements IParseCloudClass {
     requiredKeys?: string[],
     defaultValues?: {[key: string]: any},
     minimumValues?: {[key: string]: number},
+    maximumValues?: {[key: string]: number},
     immutableKeys?: string[],
   }) {
     if (params) {
@@ -95,6 +97,10 @@ export class ParseCloudClass implements IParseCloudClass {
 
       if (params.minimumValues) {
         this.minimumValues = params.minimumValues;
+      }
+
+      if (params.maximumValues) {
+        this.maximumValues = params.maximumValues;
       }
 
       if (params.immutableKeys) {
@@ -185,6 +191,26 @@ export class ParseCloudClass implements IParseCloudClass {
   }
 
   /**
+   * Checks that the object has certain minimum values
+   * @param object
+   * @param maximumValues
+   */
+  static checkAndCorrectMaximumValues (
+    object: Parse.Object, 
+    maximumValues: {[key: string]: number} = {},
+  ): Parse.Object {
+    const obj = object.clone();
+
+    for (const key in maximumValues) {
+      if ((obj.get(key) > maximumValues[key])) {
+        obj.set(key, maximumValues[key]);
+      }
+    }
+
+    return obj;
+  }
+
+  /**
    * Checks keys that should not be editable
    * if they are not explicitly changed with the master key
    * @param obj 
@@ -262,6 +288,7 @@ export class ParseCloudClass implements IParseCloudClass {
     let obj = req.object;
     obj = ParseCloudClass.setDefaultValues(obj, this.defaultValues);
     obj = ParseCloudClass.checkAndCorrectMinimumValues(obj, this.minimumValues || {});
+    obj = ParseCloudClass.checkAndCorrectMaximumValues(obj, this.minimumValues || {});
     ParseCloudClass.checkRequiredKeys(obj, this.requiredKeys);
     this.checkImmutableKeys(obj, req.master);
 

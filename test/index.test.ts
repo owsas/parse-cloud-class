@@ -131,6 +131,24 @@ describe('#checkAndCorrectMinimumValues', () => {
 
 });
 
+describe('#checkAndCorrectMaximumValues', () => {
+  test('should set the right maximum values', () => {
+    const instance = new ParseCloudClass({
+      maximumValues: { a: 200, b: 300, c: 100 },
+    });
+
+    const obj = new Parse.Object('Test');
+    obj.set('a', 400);
+    obj.set('b', 1000);
+
+    const response = ParseCloudClass.checkAndCorrectMaximumValues(obj, instance.maximumValues);
+
+    expect(response.get('a')).toEqual(200);
+    expect(response.get('b')).toEqual(300);
+    expect(response.get('c')).not.toBeDefined();
+  });
+});
+
 
 describe('#beforeFind', () => {
   test('should not alter the query by default', () => {
