@@ -8,6 +8,7 @@ Travis tests: https://travis-ci.org/owsas/parse-cloud-class/builds
 A new way to define Parse.Cloud events for your classes (DB tables). With this module you can easily:
 
 * Define minimum values for keys on your classes
+* Define maximum values for keys on your classes
 * Define default values
 * Define required keys
 * Define immutable keys (only editable with the master key)
