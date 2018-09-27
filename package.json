@@ -18,6 +18,7 @@
     "@types/jest": "^23.3.2",
     "@types/jquery": "^3.3.6",
     "@types/parse": "^2.4.7",
+    "delay": "^4.0.1",
     "express": "^4.16.3",
     "jest": "^23.6.0",
     "node-fetch": "^2.2.0",
