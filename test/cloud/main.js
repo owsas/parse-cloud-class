@@ -1,5 +1,6 @@
 const { ParseCloudClass } = require('../../src');
 const TestAddon = require('./TestAddon');
+const AnalyticAddon = require('./AnalyticAddon');
 
 class Test extends ParseCloudClass {
   async processBeforeSave(req) {
@@ -10,6 +11,7 @@ class Test extends ParseCloudClass {
 }
 
 const instance = new Test();
+instance.useAddon(new AnalyticAddon());
 instance.useAddon(new TestAddon());
 
-ParseCloudClass.configureClass(Parse, 'Test', instance); 
+ParseCloudClass.configureClass(Parse, 'Test', instance);
