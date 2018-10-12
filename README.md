@@ -19,9 +19,11 @@ A new way to define Parse.Cloud events for your classes (DB tables). With this m
 This module is meant to be used with [Parse](http://docs.parseplatform.org/) and [Parse Server](https://github.com/parse-community/parse-server)
 
 ## Installation
-`> npm install parse-server-addon-cloud-class`
+`> npm install --save parse-server-addon-cloud-class parse`
 
 __Typescript__: This module comes bundled with Intellisense :)
+
+After installing, please make sure to install also `parse>1.11.0`
 
 ## Example
 A working example can be found here: https://github.com/owsas/parse-cloud-class-example
