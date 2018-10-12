@@ -29,6 +29,9 @@
     "tslint-config-airbnb": "^5.3.0",
     "typescript": "^3.0.3"
   },
+  "peerDependencies": {
+    "parse": ">=1.11.0"
+  },
   "dependencies": {
     "is": "^3.2.1"
   },
