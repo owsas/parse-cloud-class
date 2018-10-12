@@ -7,5 +7,8 @@ cache:
 install:
   - npm install
 script:
+  - npm install codecov -g
   - npm run build
   - npm t -- --coverage
+after_success:
+  - codecov
