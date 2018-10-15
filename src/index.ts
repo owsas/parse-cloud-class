@@ -336,7 +336,7 @@ export class ParseCloudClass implements IParseCloudClass {
     res?: Parse.Cloud.BeforeDeleteResponse | IProcessResponse,
   ): Promise<Parse.Object> {
     try {
-      // Trigger the addons to determine if the object can be delete
+      // Trigger the addons to determine if the object can be deleted
       for (const addon of this.addons) {
         req.object = await addon.processBeforeDelete(req);          
       }
