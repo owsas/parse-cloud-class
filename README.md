@@ -12,7 +12,7 @@ A new way to define Parse.Cloud events for your classes (DB tables). With this m
 * Define default values
 * Define required keys
 * Define immutable keys (only editable with the master key)
-* Use addons to easily extend the funcionality of your app
+* Use addons to easily extend the functionality of your app
 * Create new addons and share them with the community
 * Customize the default behaviour to your own needs
 
