@@ -9,6 +9,7 @@
     "declaration": true,
     "declarationDir": "out",
     "rootDir": "src",
+    "experimentalDecorators": true,
     "sourceMap": true
   },
   "exclude": [
