@@ -1,4 +1,6 @@
-# Parse Cloud Class ![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master) [![codecov](https://codecov.io/gh/owsas/parse-cloud-class/branch/master/graph/badge.svg)](https://codecov.io/gh/owsas/parse-cloud-class)
+# Parse Cloud Class 
+
+![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master) [![codecov](https://codecov.io/gh/owsas/parse-cloud-class/branch/master/graph/badge.svg)](https://codecov.io/gh/owsas/parse-cloud-class)
 
 ![Logo](./repo/logo.jpg)  
 Photo by [chuttersnap](https://unsplash.com/photos/9AqIdzEc9pY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com)
@@ -114,6 +116,47 @@ export class MyCustomClass extends ParseCloudClass {
 ```
 
 You can change the implementation of any method to your needs, but please, call the super class' processBeforeSave if you expect to have requiredKeys checking, minimum values checking, addon functionalities, etcetera.
+
+### Decorators
+
+Parse Cloud Class comes with two decorators that you may use in your own applications. Please keep in mind that you must activate `enableExperimentalDecorators`.
+
+#### requireLogin decorator
+It requires all `beforeSave` and `beforeDelete` requests to be made by a registered user or by the master key
+
+
+
+#### requireKey decorator
+It pushes required keys to the given class when it is initialized
+
+Example:
+
+```ts
+@requireKey('myRequiredKey')
+export default class MyClass extends ParseClass {
+}
+```
+
+This is different from defining the required keys in the class' body, because
+in that way the previously set required keys would be overriden.
+
+Example: 
+
+``` ts
+default class MyClass extends ParseClass {
+  public requiredKeys: string[] = ['a', 'b']
+}
+
+default class MyOtherClass extends MyClass {
+  public requiredKeys: string[] = ['c'] // 'a', 'b' are not set anymore
+}
+
+// With requireKey:
+@requireKey('c')
+export default class MyOtherClass2 extends MyClass {
+  // requiredKeys are 'a', 'b', 'c'
+}
+```
 
 ### All the possibilities
 
