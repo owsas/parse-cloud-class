@@ -33,6 +33,7 @@ A working example can be found here: https://github.com/owsas/parse-cloud-class-
 ## Supported versions
 * Parse >1.10.0
 * Parse >=2.0
+* Parse >=3.0
 
 ## Basic Usage
 ```js
