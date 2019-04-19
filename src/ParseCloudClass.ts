@@ -4,7 +4,7 @@ import * as is from 'is';
 
 /**
  * Interface that allows easy testing
- * without having to create a Parse.Cloud.BeforeSaveRequest or 
+ * without having to create a Parse.Cloud.BeforeSaveRequest or
  * others
  */
 export interface IProcessRequest {
@@ -21,7 +21,7 @@ export interface IBeforeFindRequest {
 }
 
 /**
- * Interface that allows easy testing 
+ * Interface that allows easy testing
  * without having to create a Parse Cloud Response
  */
 export interface IProcessResponse {
@@ -124,7 +124,7 @@ export default class ParseCloudClass implements IParseCloudClass {
    */
   static configureClass (P: any, className: string, instance: ParseCloudClass): void {
     P.Cloud.beforeFind(className, instance.beforeFind);
-    
+
     P.Cloud.beforeSave(className, instance.beforeSave);
 
     P.Cloud.afterSave(className, instance.afterSave);
@@ -176,7 +176,7 @@ export default class ParseCloudClass implements IParseCloudClass {
    * @param minimumValues
    */
   static checkAndCorrectMinimumValues (
-    object: Parse.Object, 
+    object: Parse.Object,
     minimumValues: {[key: string]: number} = {},
   ): Parse.Object {
     const obj = object.clone();
@@ -196,7 +196,7 @@ export default class ParseCloudClass implements IParseCloudClass {
    * @param maximumValues
    */
   static checkAndCorrectMaximumValues (
-    object: Parse.Object, 
+    object: Parse.Object,
     maximumValues: {[key: string]: number} = {},
   ): Parse.Object {
     const obj = object.clone();
@@ -213,8 +213,8 @@ export default class ParseCloudClass implements IParseCloudClass {
   /**
    * Checks keys that should not be editable
    * if they are not explicitly changed with the master key
-   * @param obj 
-   * @param isMaster 
+   * @param obj
+   * @param isMaster
    */
   checkImmutableKeys(obj: Parse.Object, isMaster: boolean) {
     this.immutableKeys.forEach((key) => {
@@ -233,9 +233,9 @@ export default class ParseCloudClass implements IParseCloudClass {
   }
 
   /**
-   * Executes some code before finding 
+   * Executes some code before finding
    * elements of this class
-   * @param req 
+   * @param req
    */
   beforeFind (
     req: Parse.Cloud.BeforeFindRequest | IBeforeFindRequest,
@@ -246,9 +246,9 @@ export default class ParseCloudClass implements IParseCloudClass {
   /**
    * Executes the instance processBefore save function
    * and handles the success or errors that may occur
-   * @param req 
+   * @param req
    * @param res
-   * @return A promise that says if everything went fine or not 
+   * @return A promise that says if everything went fine or not
    */
   async beforeSave (
     req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
@@ -257,7 +257,7 @@ export default class ParseCloudClass implements IParseCloudClass {
     try {
       // Trigger the addons to determine if the object can be saved
       for (const addon of this.addons) {
-        req.object = await addon.processBeforeSave(req);          
+        req.object = await addon.processBeforeSave(req);
       }
 
       req.object = await this.processBeforeSave(req);
@@ -306,14 +306,14 @@ export default class ParseCloudClass implements IParseCloudClass {
 
     // Trigger the addons for the beforeSave process
     for (const addon of this.addons) {
-      req.object = await addon.afterSave(req);          
+      req.object = await addon.afterSave(req);
     }
 
     return req.object;
   }
 
   /**
-   * Does all the processing to determine if this 
+   * Does all the processing to determine if this
    * object can be deleted or not
    * @param req
    * @return The object that is about to be deleted
@@ -327,8 +327,8 @@ export default class ParseCloudClass implements IParseCloudClass {
   /**
    * Executes the processBeforeDelete function
    * and returns if it was ok or not
-   * @param req 
-   * @param res 
+   * @param req
+   * @param res
    * @return A promise that states if everything went fine or not
    */
   async beforeDelete (
@@ -338,7 +338,7 @@ export default class ParseCloudClass implements IParseCloudClass {
     try {
       // Trigger the addons to determine if the object can be deleted
       for (const addon of this.addons) {
-        req.object = await addon.processBeforeDelete(req);          
+        req.object = await addon.processBeforeDelete(req);
       }
 
       req.object = await this.processBeforeDelete(req);
@@ -358,17 +358,17 @@ export default class ParseCloudClass implements IParseCloudClass {
   }
 
   /**
-   * Executes something after the object was deleted 
+   * Executes something after the object was deleted
    * successfully
    * @param req
    */
   async afterDelete (
     req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
   ): Promise<Parse.Object> {
-    // Trigger the addons to determine what happens after 
+    // Trigger the addons to determine what happens after
     // the object has been deleted
     for (const addon of this.addons) {
-      req.object = await addon.afterDelete(req);          
+      req.object = await addon.afterDelete(req);
     }
 
     return req.object;
