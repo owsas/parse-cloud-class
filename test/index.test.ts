@@ -15,7 +15,6 @@ OBJ_OK.set('name', 'hello');
 OBJ_OK.set('creditCard', '213123123');
 OBJ_OK.set('description', 'hola como estas este es UN Mensaje!!!');
 
-
 describe('#configureClass', () => {
   const parseMock = {
     Cloud: {
@@ -30,7 +29,7 @@ describe('#configureClass', () => {
   const instance = new ExtendedParseClass();
 
   // Now we configure the class
-  ParseCloudClass.configureClass(parseMock, 'Test', instance);  
+  ParseCloudClass.configureClass(parseMock, 'Test', instance);
 
   test('should configure #beforeFind correctly', () => {
     expect(parseMock.Cloud.beforeFind)
@@ -52,7 +51,7 @@ describe('#configureClass', () => {
       .toHaveBeenCalledWith('Test', instance.beforeDelete);
   });
 
-  test('should configure #afterDelete correctly', () => { 
+  test('should configure #afterDelete correctly', () => {
     expect(parseMock.Cloud.afterDelete)
       .toHaveBeenCalledWith('Test', instance.afterDelete);
   });
@@ -148,7 +147,6 @@ describe('#checkAndCorrectMaximumValues', () => {
     expect(response.get('c')).not.toBeDefined();
   });
 });
-
 
 describe('#beforeFind', () => {
   test('should not alter the query by default', () => {
@@ -318,7 +316,7 @@ describe('#beforeDelete', () => {
     });
 
     const spyDelete = jest.spyOn(obj, 'processBeforeDelete');
-    spyDelete.mockImplementation(async () => { throw new Error();});
+    spyDelete.mockImplementation(async () => { throw new Error(); });
 
     await obj.beforeDelete({
       object: new Parse.Object(CLASSNAME),
@@ -332,7 +330,7 @@ describe('#beforeDelete', () => {
       },
     });
   });
-  
+
   // tslint:disable-next-line
   test('should not delete if something goes wrong, and throw if there is no response parameter', async () => {
     const CLASSNAME = 'Test';
@@ -344,7 +342,7 @@ describe('#beforeDelete', () => {
     let error;
 
     const spyDelete = jest.spyOn(obj, 'processBeforeDelete');
-    spyDelete.mockImplementation(async () => { throw new Error();});
+    spyDelete.mockImplementation(async () => { throw new Error(); });
 
     try {
       await obj.beforeDelete({
@@ -361,7 +359,7 @@ describe('#beforeDelete', () => {
   test('should have called the addon\'s processBeforeDelete', async () => {
     const classInstance = new ParseCloudClass();
     const addon = new ParseCloudClass();
-  
+
     // Here we set the class to use the given addon
     classInstance.useAddon(addon);
 
@@ -371,7 +369,7 @@ describe('#beforeDelete', () => {
     });
     expect(spyAddon).toHaveBeenCalledTimes(1);
   });
-  
+
 });
 
 describe('#processBeforeSave', () => {
@@ -441,15 +439,15 @@ describe('#processBeforeSave', () => {
       expect(actual).toEqual(classInstance.defaultValues[key]);
     }
   });
-  
+
   test('should throw an error if an immutable key is changed', async () => {
     const obj = new Parse.Object('Test');
     obj.set('test', 1);
     obj.set('test2', 2);
-    
+
     const instance = new ParseCloudClass({ immutableKeys: ['test', 'test2'] });
     let error;
-    
+
     try {
       await instance.processBeforeSave({ object: obj });
     } catch (e) {
@@ -461,12 +459,12 @@ describe('#processBeforeSave', () => {
       }).toThrow('test cannot be modified');
     }
   });
-  
+
   test('should not throw an error if an immutable key is changed with the master key', async () => {
     const obj = new Parse.Object('Test');
     obj.set('test', 1);
     obj.set('test2', 2);
-    
+
     const instance = new ParseCloudClass({ immutableKeys: ['test', 'test2'] });
     await instance.processBeforeSave({ object: obj, master: true });
   });
@@ -479,24 +477,24 @@ describe('#afterSave', () => {
       name: 'hello',
     },
   });
-  
+
   const addon = new ParseCloudClass();
-  
+
   // Here we set the class to use the given addon
   classInstance.useAddon(addon);
-  
+
   afterEach(() => {
     jest.clearAllMocks();
   });
-  
+
   test('should return the same object by default', async () => {
     const response = await classInstance.afterSave({
       object: OBJ_OK,
     });
-    
+
     expect(response.toJSON()).toEqual(OBJ_OK.toJSON());
   });
-  
+
   test('should have called the addon\'s afterSave', async () => {
     const spyAddon = jest.spyOn(addon, 'afterSave');
     await classInstance.afterSave({
@@ -508,12 +506,12 @@ describe('#afterSave', () => {
 
 describe('#processBeforeDelete', () => {
   const classInstance = new ExtendedParseClass();
-  
+
   test('should return the same object by default', async () => {
     const response = await classInstance.processBeforeDelete({
       object: OBJ_OK,
     });
-    
+
     expect(response.toJSON()).toEqual(OBJ_OK.toJSON());
   });
 });
@@ -525,20 +523,20 @@ describe('#afterDelete', () => {
       name: 'hello',
     },
   });
-  
+
   const addon = new ParseCloudClass();
-  
+
   // Here we set the class to use the given addon
   classInstance.useAddon(addon);
-  
+
   test('should return the same object by default', async () => {
     const response = await classInstance.afterDelete({
       object: OBJ_OK,
     });
-    
+
     expect(response.toJSON()).toEqual(OBJ_OK.toJSON());
   });
-  
+
   test('should have called the addon\'s afterDelete', async () => {
     const spyAddon = jest.spyOn(addon, 'afterDelete');
     const response = await classInstance.afterDelete({
@@ -550,7 +548,7 @@ describe('#afterDelete', () => {
 
 describe('Working with addons', () => {
   const testFn = jest.fn();
-  
+
   class ExtendedClass2 extends ParseCloudClass {
     async processBeforeSave(req: Parse.Cloud.BeforeSaveRequest) {
       const object = await super.processBeforeSave(req);
@@ -602,7 +600,7 @@ describe('Working with addons', () => {
     expect(testFn).toHaveBeenCalledWith(3);
   });
 
-  test('should have executed all addon functions', () => {  
+  test('should have executed all addon functions', () => {
     // Expect the object to have been mutated
     expect(obj.get('test')).toBe(true);
 

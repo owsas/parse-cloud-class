@@ -1,8 +1,8 @@
-import ParseCloudClass, { 
-  IBeforeFindRequest, 
-  IParseCloudClass, 
-  IProcessRequest, 
-  IProcessResponse, 
+import ParseCloudClass, {
+  IBeforeFindRequest,
+  IParseCloudClass,
+  IProcessRequest,
+  IProcessResponse,
 } from './ParseCloudClass';
 
 export {
