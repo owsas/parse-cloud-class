@@ -35,6 +35,54 @@ A working example can be found here: https://github.com/owsas/parse-cloud-class-
 * Parse >=2.0
 * Parse >=3.0
 
+## New: Configuration with objects
+Starting april 2019 (v1.1.0), it's possible to create classes with configuration objects
+
+Example:
+```js
+const ParseCloudClass = require('parse-server-addon-cloud-class').ParseCloudClass;
+
+// Create a new configuration object to define the class behaviour.
+// All attributes are optional
+const gamePoint = {
+  requiredKeys: ['points'], // all objects saved must have the points attribute
+  defaultValues: { points: 20 }, // by default, all new objects will have 20 points (if it was not set at the time of creation) 
+  minimumValues: { points: 10 }, // minimum 10 points
+  maximumValues: { points: 1000 }, // maximum 1000 points
+  immutableKeys: ['points'], // once set, the points can't be changed (only master can do that)
+  beforeFind: function(req) {
+    // Do something here
+    return req.query;
+  },
+  processBeforeSave: async function(req) {
+    // Do something here
+    return req.object;
+  },
+  afterSave: async function(req) {
+    // Do something here
+    return req.object;
+  },
+  processBeforeDelete: async function(req) {
+    // Do something here
+    return req.object;
+  },
+  afterDelete: async function(req) {
+    // Do something here
+    return req.object;
+  }
+}
+
+// Create an instance
+const gamePointClass = ParseCloudClass.fromObject(gamePoint);
+
+// Configure the class in the main.js cloud file
+ParseCloudClass.configureClass(Parse, 'GamePoint', gamePointClass);
+```
+
+As you see, instead of defining `beforeSave`, we use `processBeforeSave`. This is because ParseCloudClass uses the `beforeSave` function to wrap up some extra logic that we may not want to rewrite each time. In the same fashion, we use `processBeforeDelete`.
+
+With this new functionality, the `this` keyword inside the `beforeFind`, `processBeforeSave`, `afterSave`, `processBeforeDelete` and `beforeDelete` functions refers to the instance itself, which means you can access for example `this.requiredKeys`, etc.
+
 ## Basic Usage
 ```js
 /*
@@ -266,6 +314,24 @@ class Addon1 extends ParseCloudClass {
   }
 }
 ```
+
+Now you can also create addons using the new configuration objects, for example:
+
+```js
+const dbAddon = {
+  afterSave: async function(req) {
+    // replicate data to the other db
+    return req.object;
+  },
+  afterDelete: async function(req) {
+    // replicate data to the other db
+    return req.object;
+  }
+}
+
+const addonInstance = ParseCloudClass.fromObject(dbAddon);
+```
+
 
 ## Addons
 

@@ -1,6 +1,7 @@
 // @ts-check
 import * as Parse from 'parse/node';
-import { ParseCloudClass } from '../src/index';
+import { ParseCloudClass } from '../index';
+import { ICloudClassObject } from '../ParseCloudClass';
 
 class ExtendedParseClass extends ParseCloudClass {
   requiredKeys = ['name', 'creditCard', 'description'];
@@ -609,4 +610,100 @@ describe('Working with addons', () => {
     expect(obj.get('addon2')).toBe(true);
   });
 
+});
+
+describe('Given a configuration object', () => {
+  const spyFind = jest.fn();
+  const spyBeforeSave = jest.fn();
+  const spyAfterSave = jest.fn();
+  const spyBeforeDelete = jest.fn();
+  const spyAfterDelete = jest.fn();
+
+  const object: ICloudClassObject = {
+    addons: [new ParseCloudClass()],
+    defaultValues: {
+      test: true,
+    },
+    beforeFind: function (req) {
+      spyFind(this);
+      return req.query;
+    },
+    processBeforeSave: async function (req) {
+      spyBeforeSave(this);
+      return req.object;
+    },
+    afterSave: async function (req) {
+      spyAfterSave(this);
+      return req.object;
+    },
+    processBeforeDelete: async function (req) {
+      spyBeforeDelete(this);
+      return req.object;
+    },
+    afterDelete: async function (req) {
+      spyAfterDelete(this);
+      return req.object;
+    },
+  };
+
+  const instance = ParseCloudClass.fromObject(object);
+
+  test('should return a instance of ParseCloudClass', () => {
+    expect(instance).toBeInstanceOf(ParseCloudClass);
+  });
+
+  describe('Calling beforeFind', () => {
+    test('should call the mock function', () => {
+      instance.beforeFind({ query: new Parse.Query('Test') });
+      expect(spyFind).toHaveBeenCalledTimes(1);
+    });
+
+    test('"this" must reference the instance', () => {
+      expect(spyFind.mock.calls[0][0].defaultValues).toEqual(object.defaultValues);
+    });
+  });
+
+  describe('Calling processBeforeSave', () => {
+    test('should call the mock function', async () => {
+      await instance.processBeforeSave({ object: new Parse.Object('Test') });
+      expect(spyBeforeSave).toHaveBeenCalledTimes(1);
+    });
+
+    test('"this" must reference the instance', () => {
+      expect(spyBeforeSave.mock.calls[0][0].defaultValues).toEqual(object.defaultValues);
+    });
+  });
+
+  describe('Calling afterSave', () => {
+    test('should call the mock function', async () => {
+      await instance.afterSave({ object: new Parse.Object('Test') });
+      expect(spyAfterSave).toHaveBeenCalledTimes(1);
+    });
+
+    test('"this" must reference the instance', () => {
+      expect(spyAfterSave.mock.calls[0][0].defaultValues).toEqual(object.defaultValues);
+    });
+  });
+
+  describe('Calling processBeforeDelete', () => {
+    test('should call the mock function', async () => {
+      await instance.processBeforeDelete({ object: new Parse.Object('Test') });
+      expect(spyBeforeDelete).toHaveBeenCalledTimes(1);
+    });
+
+    test('"this" must reference the instance', () => {
+      expect(spyBeforeDelete.mock.calls[0][0].defaultValues).toEqual(object.defaultValues);
+    });
+  });
+
+  describe('Calling afterDelete', () => {
+    test('should call the mock function', async () => {
+      await instance.afterDelete({ object: new Parse.Object('Test') });
+      expect(spyAfterDelete).toHaveBeenCalledTimes(1);
+    });
+
+    test('"this" must reference the instance', () => {
+      expect(spyAfterDelete.mock.calls[0][0].defaultValues).toEqual(object.defaultValues);
+    });
+  });
 });

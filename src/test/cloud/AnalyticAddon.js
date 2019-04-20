@@ -1,5 +1,5 @@
 const Parse = require('parse/node');
-const { ParseCloudClass } = require('../../src');
+const { ParseCloudClass } = require('../../');
 
 class AnalyticAddon extends ParseCloudClass {
   async afterSave(req) {

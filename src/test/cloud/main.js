@@ -1,4 +1,4 @@
-const { ParseCloudClass } = require('../../src');
+const { ParseCloudClass } = require('../../');
 const TestAddon = require('./TestAddon');
 const AnalyticAddon = require('./AnalyticAddon');
 
