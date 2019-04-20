@@ -12,3 +12,9 @@ script:
   - npm t -- --coverage
 after_success:
   - codecov
+deploy:
+  provider: npm
+  email: jcguarinpenaranda@gmail.com
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
