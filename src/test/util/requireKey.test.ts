@@ -1,5 +1,5 @@
-import { ParseCloudClass } from '../../src';
-import requireKey from '../../src/decorators/requireKey';
+import { ParseCloudClass } from '../../';
+import requireKey from '../../decorators/requireKey';
 
 @requireKey('testKey', 'testKey38')
 class TestClass extends ParseCloudClass {

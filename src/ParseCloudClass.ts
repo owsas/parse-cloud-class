@@ -29,6 +29,41 @@ export interface IProcessResponse {
   error: ((e: any) => void);
 }
 
+export interface IConstructorParams {
+  requiredKeys?: string[];
+  defaultValues?: {[key: string]: any};
+  minimumValues?: {[key: string]: number};
+  maximumValues?: {[key: string]: number};
+  immutableKeys?: string[];
+}
+
+/**
+ * Interface that describes a configuration object
+ */
+export interface ICloudClassObject extends IConstructorParams {
+  addons?: ParseCloudClass[];
+
+  beforeFind?: (
+    req: Parse.Cloud.BeforeFindRequest,
+  ) => Parse.Query;
+
+  processBeforeSave?: (
+    req: Parse.Cloud.BeforeSaveRequest,
+  ) => Promise<Parse.Object>;
+
+  afterSave?: (
+    req: Parse.Cloud.AfterSaveRequest,
+  ) => Promise<Parse.Object>;
+
+  processBeforeDelete?: (
+    req: Parse.Cloud.BeforeSaveRequest,
+  ) => Promise<Parse.Object>;
+
+  afterDelete?: (
+    req: Parse.Cloud.AfterSaveRequest,
+  ) => Promise<Parse.Object>;
+}
+
 /**
  * Defines the methods every ParseCloudClass should have
  */
@@ -79,13 +114,7 @@ export default class ParseCloudClass implements IParseCloudClass {
   addons: ParseCloudClass [] = [];
   immutableKeys: string[] = [];
 
-  constructor (params?: {
-    requiredKeys?: string[],
-    defaultValues?: {[key: string]: any},
-    minimumValues?: {[key: string]: number},
-    maximumValues?: {[key: string]: number},
-    immutableKeys?: string[],
-  }) {
+  constructor (params?: IConstructorParams) {
     if (params) {
       if (params.requiredKeys) {
         this.requiredKeys = params.requiredKeys;
@@ -114,6 +143,84 @@ export default class ParseCloudClass implements IParseCloudClass {
     this.beforeFind = this.beforeFind.bind(this);
     this.beforeSave = this.beforeSave.bind(this);
     this.useAddon = this.useAddon.bind(this);
+  }
+
+  /**
+   * Get a class configuration based
+   * on a JSON object
+   * @param object
+   */
+  static fromObject (object: ICloudClassObject): ParseCloudClass {
+    // Create a class that extends the ParseCloudClass and adds behaviours
+    // set in the object
+    class ExtendedCloudClass extends ParseCloudClass {
+      beforeFind(req: Parse.Cloud.BeforeFindRequest): Parse.Query {
+        let query = super.beforeFind(req);
+
+        if (object.beforeFind) {
+          query = object.beforeFind.bind(this)(req);
+        }
+
+        return query;
+      }
+
+      async processBeforeSave (
+        req: Parse.Cloud.BeforeSaveRequest | IProcessRequest,
+      ): Promise<Parse.Object> {
+        let obj = await super.processBeforeSave(req);
+
+        if (object.processBeforeSave) {
+          obj =  await object.processBeforeSave.bind(this)(req);
+        }
+
+        return obj;
+      }
+
+      async afterSave(req: Parse.Cloud.AfterSaveRequest): Promise<Parse.Object> {
+        let obj = await super.afterSave(req);
+
+        if (object.afterSave) {
+          obj = await object.afterSave.bind(this)(req);
+        }
+
+        return obj;
+      }
+
+      async processBeforeDelete (
+        req: Parse.Cloud.BeforeDeleteRequest | IProcessRequest,
+      ): Promise<Parse.Object> {
+        let obj = await super.processBeforeDelete(req);
+
+        if (object.processBeforeDelete) {
+          obj =  await object.processBeforeDelete.bind(this)(req);
+        }
+
+        return obj;
+      }
+
+      async afterDelete(
+        req: Parse.Cloud.AfterDeleteRequest,
+      ): Promise<Parse.Object> {
+        let obj = await super.afterDelete(req);
+
+        if (object.afterDelete) {
+          obj = await object.afterDelete.bind(this)(req);
+        }
+
+        return obj;
+      }
+    }
+
+    const cloudClass = new ExtendedCloudClass(object);
+
+    // Attach the addons
+    if (object.addons && object.addons.length) {
+      object.addons.forEach((addon) => {
+        cloudClass.useAddon(addon);
+      });
+    }
+
+    return cloudClass;
   }
 
   /**
@@ -261,7 +368,7 @@ export default class ParseCloudClass implements IParseCloudClass {
       }
 
       req.object = await this.processBeforeSave(req);
-      if (res) {
+      if (res && res.success) {
         (res as any).success(req.object);
       } else {
         return req.object;

@@ -1,5 +1,5 @@
 import * as Parse from 'parse/node';
-import requireLogin, { PLEASE_LOGIN } from '../../src/util/requireLogin';
+import requireLogin, { PLEASE_LOGIN } from '../../util/requireLogin';
 
 test('Given a request with no user nor master key: should throw', () => {
   expect(() => {

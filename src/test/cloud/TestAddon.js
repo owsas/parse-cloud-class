@@ -1,4 +1,4 @@
-const { ParseCloudClass } = require('../../src');
+const { ParseCloudClass } = require('../../');
 
 /**
  * Sets the key 'testAddonProcessed' to true
