@@ -268,7 +268,7 @@ export default class ParseCloudClass implements IParseCloudClass {
       }
     } catch (e) {
       const message = e.message || JSON.stringify(e);
-      if (res) {
+      if (res && res.error) {
         res.error(message);
       } else {
         throw e;
@@ -349,7 +349,7 @@ export default class ParseCloudClass implements IParseCloudClass {
       }
     } catch (e) {
       const message = e.message || JSON.stringify(e);
-      if (res) {
+      if (res && res.error) {
         res.error(message);
       } else {
         throw e;
