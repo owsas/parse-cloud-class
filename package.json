@@ -15,19 +15,19 @@
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.16.1",
-    "@types/jest": "^24.0.11",
-    "@types/jquery": "^3.3.29",
-    "@types/parse": "^2.2.2",
+    "@types/jest": "^24.0.16",
+    "@types/jquery": "^3.3.30",
+    "@types/parse": "^2.2.7",
     "delay": "^4.0.1",
     "express": "^4.16.4",
     "jest": "^24.7.1",
     "node-fetch": "^2.2.0",
-    "parse": "^2.3.2",
+    "parse": "^2.6.0",
     "parse-server": "^3.7.2",
     "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.4.4"
+    "typescript": "^3.5.3"
   },
   "peerDependencies": {
     "parse": ">=1.11.0"
