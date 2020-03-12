@@ -1,3 +1,6 @@
+# REPO MOVED
+This repository has been moved to Otherwise's new monorepo :) https://github.com/owsas/opensource/tree/master/packages/parse-cloud-class Enjoy! 
+
 # Parse Cloud Class 
 
 ![Travis](https://travis-ci.org/owsas/parse-cloud-class.svg?branch=master) [![codecov](https://codecov.io/gh/owsas/parse-cloud-class/branch/master/graph/badge.svg)](https://codecov.io/gh/owsas/parse-cloud-class)
