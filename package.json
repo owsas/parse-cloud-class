@@ -21,7 +21,7 @@
     "delay": "^4.0.1",
     "express": "^4.16.4",
     "jest": "^24.7.1",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^3.1.1",
     "parse": "^2.6.0",
     "parse-server": "^4.5.0",
     "ts-jest": "^24.0.2",
